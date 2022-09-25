@@ -23,30 +23,130 @@
 #define MAX_LED_BRIGHTNESS 255
 #define MIN_LED_BRIGHTNESS 0
 
+#define LED_ON  65535
+#define LED_OFF 0
+
+#define TIME_UNIT 200
+
+// function turns LED on
+void led_on(){
+    pwm_set_gpio_level(PICO_DEFAULT_LED_PIN, LED_ON);
+}
+
+// function turns LED on
+void led_off(){
+    pwm_set_gpio_level(PICO_DEFAULT_LED_PIN, LED_OFF);
+}
+
+// creates a morse dot
+void morse_dot() {
+    led_on();
+    sleep_ms(TIME_UNIT * 1);
+    led_off();
+    sleep_ms(TIME_UNIT * 1);
+}
+
+// creates morse dash
+void morse_dash() {
+    led_on();
+    sleep_ms(TIME_UNIT * 3);
+    led_off();
+    sleep_ms(TIME_UNIT * 1);
+}
+
+// define end of a letter
+void morse_endletter() {
+    led_off();
+    sleep_ms(TIME_UNIT * 3);
+}
+
+// define end of a letter
+void morse_endword() {
+    led_off();
+    sleep_ms(TIME_UNIT * 7);
+}
+
+// define the letter h '....'
+void morse_h() {
+    morse_dot();
+    morse_dot();
+    morse_dot();
+    morse_dot();
+
+    morse_endletter();
+}
+
+// define the letter e '.'
+void morse_e() {
+    morse_dot();
+
+    morse_endletter();
+}
+
+// define the letter l '.-..'
+void morse_l() {
+    morse_dot();
+    morse_dash();
+    morse_dot();
+    morse_dot();
+
+    morse_endletter();
+}
+
+// define the letter o '---'
+void morse_o() {
+    morse_dash();
+    morse_dash();
+    morse_dash();
+
+    morse_endletter();
+}
+
+// define the letter w '.--'
+void morse_w() {
+    morse_dot();
+    morse_dash();
+    morse_dash();
+
+    morse_endletter();
+}
+
+// define the letter r '.-.'
+void morse_r() {
+    morse_dot();
+    morse_dash();
+    morse_dot();
+
+    morse_endletter();
+}
+
+// define the letter d '-..'
+void morse_d() {
+    morse_dash();
+    morse_dot();
+    morse_dot();
+
+    morse_endletter();
+}
+
 void on_pwm_wrap() {
 // this is the interrupt handler, called each time the PWM counter wraps
-    static int fade = 0;
-    static bool going_up = true;
-    // Clear the interrupt flag that brought us here
-    pwm_clear_irq(pwm_gpio_to_slice_num(PICO_DEFAULT_LED_PIN));
+    morse_h(); //
+    morse_e(); //
+    morse_l(); //
+    morse_l(); //
+    morse_o(); //
 
-    if (going_up) {
-        ++fade;
-        if (fade > MAX_LED_BRIGHTNESS) {
-            fade = MAX_LED_BRIGHTNESS;
-            going_up = false;
-        }
-    } else {
-        --fade;
-        if (fade < MIN_LED_BRIGHTNESS) {
-            fade = MIN_LED_BRIGHTNESS;
-            going_up = true;
-        }
-    }
-    // Square the fade value to make the LED's brightness appear more linear
-    // note uint16_t range (0-65535)
-    pwm_set_gpio_level(PICO_DEFAULT_LED_PIN, fade * fade);
-    //https://raspberrypi.github.io/pico-sdk-doxygen/group__hardware__pwm.html#ga279d1ba7dcc8f19619f389317efb41fd
+    morse_endword();
+
+    morse_w(); //
+    morse_o(); //
+    morse_r(); //
+    morse_l(); //
+    morse_d(); //
+
+    morse_endword();
+
 }
 
 
