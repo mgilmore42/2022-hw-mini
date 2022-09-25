@@ -20,9 +20,6 @@
 #error pwm/led_fade example requires a board with a regular LED
 #endif
 
-#define MAX_LED_BRIGHTNESS 255
-#define MIN_LED_BRIGHTNESS 0
-
 #define LED_ON  1
 #define LED_OFF 0
 
@@ -149,9 +146,13 @@ void morse_hello_world() {
 }
 
 int main(void) {
+    // enables LED pin
     gpio_init(PICO_DEFAULT_LED_PIN);
+
+    // sets LED pin to be output
     gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
 
+    // repeates "hello world " in morse code
     while (true){
         morse_hello_world();
     }
