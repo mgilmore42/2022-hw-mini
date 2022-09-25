@@ -23,19 +23,19 @@
 #define MAX_LED_BRIGHTNESS 255
 #define MIN_LED_BRIGHTNESS 0
 
-#define LED_ON  65535
+#define LED_ON  1
 #define LED_OFF 0
 
-#define TIME_UNIT 200
+#define TIME_UNIT 100
 
 // function turns LED on
 void led_on(){
-    pwm_set_gpio_level(PICO_DEFAULT_LED_PIN, LED_ON);
+    gpio_put(PICO_DEFAULT_LED_PIN, LED_ON);
 }
 
 // function turns LED on
 void led_off(){
-    pwm_set_gpio_level(PICO_DEFAULT_LED_PIN, LED_OFF);
+    gpio_put(PICO_DEFAULT_LED_PIN, LED_OFF);
 }
 
 // creates a morse dot
@@ -129,8 +129,8 @@ void morse_d() {
     morse_endletter();
 }
 
-void on_pwm_wrap() {
-// this is the interrupt handler, called each time the PWM counter wraps
+// prints "hello word " in morse code
+void morse_hello_world() {
     morse_h(); //
     morse_e(); //
     morse_l(); //
@@ -146,34 +146,13 @@ void on_pwm_wrap() {
     morse_d(); //
 
     morse_endword();
-
 }
 
-
 int main(void) {
-    // Tell the LED pin that the PWM is in charge of its value.
-    gpio_set_function(PICO_DEFAULT_LED_PIN, GPIO_FUNC_PWM);
-    // Figure out which slice we just connected to the LED pin
-    uint slice_num = pwm_gpio_to_slice_num(PICO_DEFAULT_LED_PIN);
+    gpio_init(PICO_DEFAULT_LED_PIN);
+    gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
 
-    // Mask our slice's IRQ output into the PWM block's single interrupt line
-    pwm_clear_irq(slice_num);
-    pwm_set_irq_enabled(slice_num, true);
-
-    // Register the interrupt handler: here it's function on_pwm_wrap() defined above
-    irq_set_exclusive_handler(PWM_IRQ_WRAP, on_pwm_wrap);
-    irq_set_enabled(PWM_IRQ_WRAP, true);
-
-    // Get some sensible defaults for the slice configuration. By default, the
-    // counter is allowed to wrap over its maximum range (0 to 2**16-1)
-    pwm_config config = pwm_get_default_config();
-    // Set divider, reduces counter clock to sysclock/this value
-    pwm_config_set_clkdiv(&config, 4.f);
-    // Load the configuration into our PWM slice, and set it running.
-    pwm_init(slice_num, &config, true);
-
-    // This empty loop allows the PWM interrupt handler to effectively take over program control.
-    // tight_loop_contents() is an empty no-op function that's a placeholder.
-    while (true)
-        tight_loop_contents();
+    while (true){
+        morse_hello_world();
+    }
 }
