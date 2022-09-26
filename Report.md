@@ -2,7 +2,7 @@ The new modified program used the Raspberry pi picos onboard LED to flash "Hello
 
 # Morse Code Key Used
 
-![morse code table](https://en.wikipedia.org/wiki/Morse_code#/media/File:International_Morse_Code.svg)
+![morse code table](https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/International_Morse_Code.svg/800px-International_Morse_Code.svg.png)
 
 
 
