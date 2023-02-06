@@ -44,10 +44,8 @@ Windows Subsystem for Linux (WSL) is useful for many projects including the Rasp
 WSL can be the easiest way to work with non-Windows projects on Windows.
 
 The Ubuntu WSL process takes about 10 minutes depending on download speed.
-WSL can be installed either via (pick one):
-
-* [Ubuntu Windows Store app](https://apps.microsoft.com/store/detail/ubuntu-22041-lts/9PN20MSR04DW)
-* [Ubuntu WSL install](https://docs.microsoft.com/en-us/windows/wsl/install) from Windows Command Prompt: `wsl --install`  (this method may not work on Windows 10)
+WSL can be installed via the [Microsoft Store Ubuntu app](https://docs.microsoft.com/en-us/windows/wsl/install).
+If the Microsoft Store isn't available on the computer, it is alsopossible to install [Ubuntu WSL manually](https://docs.microsoft.com/en-us/windows/wsl/install), but the Store is the method Microsoft WSL team recommends.
 
 [WSL can access](https://docs.microsoft.com/en-us/windows/wsl/filesystems)
 the native Windows filesystem.
